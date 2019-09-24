@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> {% load static %}
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'login_reg/css/bootstrap.css' %}">
+    <title>Handy Helper</title>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg" style="background-color: #EDEAE5; padding:20px; margin-bottom: 20px;">
+            <h1 style="margin-right: 320px;">Welcome {{request.session.username}}! Create a new job?</h1>
+            <a href="/log_out" class="btn btn-outline-primary">Log Out</a>
+        </nav>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-7">
+            <h2>Add a New Job</h2>
+            {% if messages %}
+            <ul class="messages" style="color:red;">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="form-group">
+                <form action="/new_job" method="POST">
+                    {% csrf_token %}
+                    <label for="title">Title</label>
+                    <input type="text" name="title" class="form-control">
+                    <label for="description">Description</label>
+                    <input type="text" name="description" class="form-control">
+                    <label for="location">Location</label>
+                    <input type="text" name="location" class="form-control">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select multiple class="form-control" id="category" name="category[]">
+                            {% for c in all_categories %}
+                            <option value = "{{c.id}}">{{c.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <label for="new_category">Or Add a new Category</label>
+                    <input type="text" name="new_category" class="form-control">
+                    <input type="submit" value="Add Job" class="btn btn-outline-info" style="display: block; margin-top: 20px;">
+                    <a href="/dashboard" class="btn btn-outline-info" style="margin-top: 20px;">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
